@@ -39,21 +39,21 @@ def mergeImages( name1, name2, name3 ):
 
 	if above.ulx < below.ulx:
 		
-		copyarea = ( above.ulx, above.uly, overlap[0], above.lry )
+		copyarea = ( above.ulx, above.uly, overlap[0], above.lry )		
 		copy_into( above, 1, newImage, 1, copyarea )
 
-		copyarea = ( overlap[0], above.uly, above.lrx, overlap[1] )
+		copyarea = ( overlap[0], above.uly, above.lrx, overlap[1] )		
 		copy_into( above, 1, newImage, 1, copyarea )
 
-		copyarea = ( overlap[0], above.lry, above.lrx, below.lry )
+		copyarea = ( overlap[0], above.lry, above.lrx, below.lry )		
 		copy_into( below, 1, newImage, 1, copyarea )
 
-		copyarea = ( overlap[2], below.uly, below.lrx, below.lry )
+		copyarea = ( overlap[2], below.uly, below.lrx, below.lry )		
 		copy_into( below, 1, newImage, 1, copyarea )
 
 		copyarea = overlap
 		data1 = above.readFromImageNP( 1, copyarea, np.float )
-		data1 = below.readFromImageNP( 1, copyarea, np.float )
+		data2 = below.readFromImageNP( 1, copyarea, np.float )
 		zeroCheck = np.equal( 0, data2 )
 		data = np.choose( zeroCheck,( data2, data1 ) )
 		dataNpy = np.array( data )
@@ -61,16 +61,16 @@ def mergeImages( name1, name2, name3 ):
 
 	else:
 
-		copyarea = ( below.ulx, below.uly, overlap[0], below.lry )
+		copyarea = ( below.ulx, below.uly, overlap[0], below.lry )		
 		copy_into( below, 1, newImage, 1, copyarea )
 
-		copyarea = ( overlap[0], above.lry, below.lrx, below.lry )
+		copyarea = ( overlap[0], above.lry, below.lrx, below.lry )		
 		copy_into( below, 1, newImage, 1, copyarea )
 
-		copyarea = ( above.ulx, above.uly, overlap[2], overlap[1] )
+		copyarea = ( above.ulx, above.uly, overlap[2], overlap[1] )		
 		copy_into( above, 1, newImage, 1, copyarea )
 
-		copyarea = ( overlap[2], above.uly, above.lrx, above.lry )
+		copyarea = ( overlap[2], above.uly, above.lrx, above.lry )		
 		copy_into( above, 1, newImage, 1, copyarea )		
 
 		copyarea = overlap

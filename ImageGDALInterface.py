@@ -114,11 +114,20 @@ class ImageAbstraction:
 		return self.getLonLatFromOffSet(self.XSize,self.YSize)
 
 	#area is a tuplet with (ulx,uly,lrx,lry) of copydata
-	def readFromImage( self, band, area ):
+	def readFromImage( self, band, area, targetSize=None ):
 		bandData = self.image.GetRasterBand(band)
 		offset = self.getOffSet(area[0], area[1])
 		size = self.getOffSetFromLatLon(area[0], area[1], area[2], area[3])
-		data = bandData.ReadRaster( offset[0], offset[1], size[0], size[1], size[0], size[1], self.dtype)
+		
+		for x in size:
+			if x<=0:
+				return
+
+		if targetSize is not None:
+			data = bandData.ReadRaster( offset[0], offset[1], size[0], size[1], size[0], size[1], self.dtype)
+		else:
+			data = bandData.ReadRaster( offset[0], offset[1], size[0], size[1], targetSize[0], targetSize[1], self.dtype)
+		
 		return data
 
 	#NOTE: No option to choose targetSize. Might cause errors.
@@ -126,6 +135,14 @@ class ImageAbstraction:
 		bandData = self.image.GetRasterBand(band)
 		offset = self.getOffSet(area[0], area[1])
 		size = self.getOffSetFromLatLon(area[0], area[1], area[2], area[3])
+		
+		for x in size:
+			if x<=0:
+				return
+
+		if data is None:
+			return
+
 		bandData.WriteRaster( offset[0], offset[1], size[0], size[1], data, size[0], size[1], self.dtype)
 
 	#dtype - numpy datatype e.g. np.float
@@ -142,8 +159,9 @@ class ImageAbstraction:
 		bandData.WriteArray(data, offset[0], offset[1])
 
 #area is a tuplet with (ulx,uly,lrx,lry) of copydata
-def copy_into( source, sourceBand, target, targetBand, datatype, area ):
-	data = source.readFromImage(sourceBand, area)
+def copy_into( source, sourceBand, target, targetBand, area ):
+	targetSize = target.getOffSetFromLatLon( area[0], area[1], area[2], area[3] )	
+	data = source.readFromImage( sourceBand, area, targetSize )
 	target.writeIntoImage(targetBand, area, data)
 
 def findOverlapArea( image1, image2 ):

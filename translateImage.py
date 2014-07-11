@@ -18,8 +18,8 @@ def translateImage(name, translate_x, translate_y):
 	transLonLatUL = image.getLonLatFromOffSet(translate_x,translate_y)	
 	transLonLatLR = image.getLonLatFromOffSet(image.XSize+translate_x,image.YSize+translate_y)	
 	newImage = ImageAbstraction.create( 'temp.tif', transLonLatUL, transLonLatLR, image.pixWidth, image.pixHeight, image.projection, image.dtype, image.nBands )	
-	
-	data = image.readFromImage( 1, (image.ulx,image.uly,image.getLRLonLat()[0],image.getLRLonLat()[1]) )
+
+	data = image.readFromImage( 1, (image.ulx,image.uly,image.getLRLonLat()[0],image.getLRLonLat()[1])  )
 	newImage.writeIntoImage( 1, (transLonLatUL[0],transLonLatUL[1],transLonLatLR[0],transLonLatLR[1]), data )
 	image.deallocate()
 	newImage.deallocate()

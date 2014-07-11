@@ -37,16 +37,16 @@ class UIResponse():
 
 		if path is not None:
 			if n==1:
-				self.ui.img1.setText(path)
-				self.image1 = path
+				self.ui.img1.setText(path)				
+				self.image1 = str(path)
 				self.status.setText('Status:'+'\t Image1 Selected.')
 			elif n==2:
 				self.ui.img2.setText(path)
-				self.image2 = path
+				self.image2 = str(path)
 				self.status.setText('Status:'+'\t Image2 Selected.')
 			else:
 				self.ui.output.setText(path)
-				self.output = path
+				self.output = str(path)
 				self.status.setText('Status:'+'\t Output Image Selected.')
 
 	def merge(self):
